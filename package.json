@@ -9,7 +9,9 @@
     "test": "node --experimental-strip-types --test tests/*.test.ts",
     "build": "npm run typecheck && vite build",
     "preview": "node scripts/serve-static.mjs",
-    "check:browser": "node scripts/browser-check.mjs"
+    "check:browser": "node scripts/browser-check.mjs && node scripts/core-check.mjs",
+    "check:core": "node scripts/core-check.mjs",
+    "benchmark": "node scripts/benchmark.mjs"
   },
   "devDependencies": {
     "vite": "8.3.2",

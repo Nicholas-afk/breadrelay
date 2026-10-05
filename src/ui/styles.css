@@ -46,7 +46,8 @@
   a {
     color: inherit;
   }
-  input {
+  input,
+  textarea {
     min-height: 44px;
     width: 100%;
     border: 1px solid #8b9589;
@@ -63,6 +64,7 @@
   a:focus-visible,
   summary:focus-visible,
   input:focus-visible,
+  textarea:focus-visible,
   [tabindex]:focus-visible {
     outline: 3px solid var(--focus);
     outline-offset: 3px;
@@ -125,6 +127,129 @@
   }
   .muted {
     color: var(--muted);
+  }
+}
+@layer components {
+  .offer-row {
+    row-gap: 0;
+  }
+  .pickup-editor {
+    grid-column: 1 / -1;
+    margin-top: 4px;
+  }
+  .pickup-editor > summary {
+    font-size: 13px;
+    color: var(--green);
+    width: fit-content;
+  }
+  .pickup-editor form {
+    padding: 16px 0 8px;
+    border-top: 1px solid var(--line);
+  }
+  .pickup-fields {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 16px;
+  }
+  .pickup-fields label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 7px;
+  }
+  .pickup-editor .field-hint {
+    margin: 12px 0;
+    display: block;
+  }
+  .export-panel {
+    border-bottom: 1px solid var(--line);
+    padding: 24px 0;
+    margin-bottom: 24px;
+  }
+  .export-panel p {
+    line-height: 1.6;
+    font-size: 14px;
+    max-width: 75ch;
+  }
+  .export-panel label {
+    display: block;
+    font-size: 14px;
+    margin: 14px 0 8px;
+    font-weight: 600;
+  }
+  .save-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 14px 0;
+  }
+  .export-panel textarea {
+    font-family: ui-monospace, monospace;
+    font-size: 13px;
+    resize: vertical;
+    white-space: pre;
+  }
+  .baseline-details {
+    margin: 12px 0;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .baseline-details > summary {
+    color: inherit;
+  }
+  .baseline-details ul {
+    margin: 4px 0 14px;
+    padding-left: 18px;
+  }
+  .travel-table {
+    max-width: 100%;
+    overflow-x: auto;
+    margin: 16px 0;
+  }
+  .travel-table table {
+    border-collapse: collapse;
+    font-size: 13px;
+    width: 100%;
+  }
+  .travel-table caption {
+    text-align: left;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  .travel-table th,
+  .travel-table td {
+    border-bottom: 1px solid var(--line);
+    padding: 12px;
+    white-space: nowrap;
+    text-align: right;
+  }
+  .travel-table th {
+    text-align: left;
+    font-weight: 600;
+  }
+  .travel-table th:first-child {
+    position: sticky;
+    left: 0;
+    background: var(--paper);
+  }
+  @media (max-width: 700px) {
+    .pickup-fields {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px 12px;
+    }
+    .pickup-fields > div:last-child {
+      grid-column: 1 / -1;
+      max-width: 240px;
+    }
+    .pickup-editor {
+      margin-top: 8px;
+    }
+    .pickup-editor input {
+      min-width: 0;
+    }
+    .export-panel {
+      padding: 20px 0;
+    }
   }
 }
 @layer layout {

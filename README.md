@@ -27,10 +27,18 @@ Open http://127.0.0.1:4173/breadrelay/. `npm run check:browser` tests compiled f
 
 At most 10 whole pickups, 3 volunteers, 3 pickups per volunteer, and one hub. Same-day times in Asia/Hong_Kong. Before-departure planning only. Fixed, supplied directed travel minutes; no navigation, GPS or live traffic. No accounts, backend, external runtime requests or browser API keys. Inputs remain in memory and are cleared on reload. Downloads are the durable record.
 
-Open a scenario JSON file (schema version 1) based on `src/fixtures/demo.json`; the import is validated before replacing the current round. Downloaded reports are a separate format and are not currently reimportable. Capacity and shift times are editable in the interface. Pickup and travel-table editing currently require a round file.
+Crew availability, carrying capacity, shifts, pickup weight, collection windows, service minutes and hub deadlines are editable. Use Apply to validate a draft and recalculate; typing alone never dispatches a plan. Invalid inputs preserve the last applied round. The travel table under “What this plan checks” shows every supplied direction and minute.
+
+Open a round JSON file (schema version 1) based on `src/fixtures/demo.json` to replace all inputs and pin a new starting plan. New locations or volunteers require a complete replacement file, including every travel cell. A saved plan report instead restores both starting and changed inputs, then recomputes every plan and explanation. Imported totals, routes and claims are ignored. Reports must compare the same service date, pickup IDs and volunteer IDs. Files are limited to256 KiB and rejected transactionally if invalid.
+
+“Download plan” creates a report and exposes its full JSON. “Copy or save” offers the same report for copying; “Save current round” creates a reusable round file. Denied clipboard access selects the text for manual copying. A failed download leaves that text available. Print routes preserves source/date/timezone and all arrival, wait, collection, load and deadline details. Pending or failed calculations disable current exports and label the last checked routes. Unsaved field drafts survive calculation responses.
 
 ## Implementation
 
 Native HTML/CSS, TypeScript, Vite and a module worker. An exact bounded route enumeration and disjoint-subset dynamic program maximize grams, then retain earlier volunteer assignments, then minimize travel. A separate route validator recomputes timing and load. See `docs/algorithm.md`, `docs/evaluation.md` and `AI_DISCLOSURE.md`.
 
 The relative asset build is compatible with static project-subpath hosting. GitHub Pages deployment has not yet been performed. No server is needed.
+
+## Verify
+
+`npm test` covers the real optimizer, independent plan validation, scenario/file contracts and hand-checked edge fixtures;350 generated objectives are compared with an independent exhaustive oracle. `npm run build` performs strict type checking. `npm run check:browser` runs both compiled-browser suites, including keyboard cancellation-to-report, report restoration, offer edits, print/mobile layouts, offline-after-load, worker failure, timeout/retry, revision isolation and download/clipboard failures. Injected failures are test conditions, not application metrics. `npm run benchmark` measures30 complete bounded calculations in the compiled worker. Evidence and limitations are in `docs/evaluation.md`.

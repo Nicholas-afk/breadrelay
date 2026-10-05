@@ -47,7 +47,9 @@ export function routeHtml(
 <div>
 <strong>${esc(pickup.label)}</strong>
 <span class="stop-weight">${kg(pickup.weightGrams)} kg</span>
-<p>Leave ${time(stop.departMinute)} · closes ${time(pickup.closeMinute)}</p>${stop.waitMinutes ? `<p>Wait ${stop.waitMinutes} min before collection</p>` : ""}${changed && !alternative ? '<span class="reassigned">Reassigned to this volunteer</span>' : ""}</div>
+<p>Arrive ${time(stop.arrivalMinute)}${stop.waitMinutes ? ` · wait ${stop.waitMinutes} min` : ""} · collect ${pickup.serviceMinutes} min</p>
+<p>Leave ${time(stop.departMinute)} · ${kg(stop.loadAfterGrams)} kg load</p>
+<p>Closes ${time(pickup.closeMinute)} · ${stop.pickupSlackMinutes} min spare</p>${changed && !alternative ? '<span class="reassigned">Reassigned to this volunteer</span>' : ""}</div>
 </li>`;
     })
     .join("")}<li class="hub-stop">

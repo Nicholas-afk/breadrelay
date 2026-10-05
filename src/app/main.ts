@@ -9,14 +9,21 @@ import type {
 } from "../domain/types.ts";
 import { validateScenario } from "../domain/scenario.ts";
 import { parseRound, downloadJson } from "../io/round-file.ts";
-import { createReport } from "../io/report.ts";
+import { PlanDelivery } from "../io/plan-delivery.ts";
 import { WorkerClient } from "./worker-client.ts";
 import { esc, kg, time, planHtml } from "../ui/routes.ts";
+import {
+  pickupEditorHtml,
+  bindPickupEditors,
+  clearPickupDrafts,
+} from "../ui/pickup-editor.ts";
+import { travelTableHtml } from "../ui/travel-table.ts";
 const checked = validateScenario(rawDemo);
 if (!checked.ok) throw Error("Bundled sample is invalid.");
 const demo = checked.value;
 let scenario = structuredClone(demo),
   referenceScenario = structuredClone(demo),
+  lastCheckedScenario: Scenario | null = null,
   referencePlan: Plan | null = null,
   calculation: Calculation | null = null;
 let fileRevision = 0;
@@ -35,6 +42,11 @@ const $ = <T extends HTMLElement = HTMLElement>(id: string): T =>
 const announce = (text: string) => {
   $("announcer").textContent = text;
 };
+const delivery = new PlanDelivery(() =>
+  phase === "ready" && calculation
+    ? { scenario, referenceScenario, calculation }
+    : null,
+);
 function clearErrors(): void {
   $("error-box").hidden = true;
   document.title = "BreadRelay — evening collection planner";
@@ -89,15 +101,18 @@ function render(): void {
       ? document.activeElement.id
       : "";
   const open = [
-    ...document.querySelectorAll<HTMLDetailsElement>("#crew details[open]"),
+    ...document.querySelectorAll<HTMLDetailsElement>(
+      "#crew details[open], #offers details[open]",
+    ),
   ].map((d) => d.id);
   $("date-label").textContent =
     `/ ${new Intl.DateTimeFormat("en-HK", { day: "numeric", month: "short", timeZone: "Asia/Hong_Kong" }).format(new Date(scenario.serviceDate + "T12:00:00+08:00"))}`;
   $("data-note").innerHTML =
     scenario.dataKind === "synthetic"
-      ? "<strong>Sample round.</strong> Fictional bakeries, volunteers and travel times. Try marking Volunteer A unavailable."
+      ? `<strong>Sample round.</strong> Fictional bakeries, volunteers and travel times. ${scenario.volunteers.find((v) => v.id === "volunteer-a")?.available ? "Try marking Volunteer A unavailable." : "Change the crew or offers to test replanning."}`
       : "<strong>Your round.</strong> Supplied weights and travel minutes; no live traffic checks.";
   $("travel-source").textContent = scenario.travelSource;
+  $("travel-table").innerHTML = travelTableHtml(scenario);
   $("print-context").innerHTML = `<h1>BreadRelay collection plan</h1>
 <p>${esc(scenario.serviceDate)} · Hong Kong time (Asia/Hong_Kong)</p>
 <p>${scenario.dataKind === "synthetic" ? "Sample round — synthetic bakeries, volunteers and times." : "Operator-supplied round."} Scheduled quantities; delivery is not verified.</p>
@@ -243,24 +258,24 @@ function render(): void {
 <p class="reference">Starting plan: ${kg(calculation!.referencePlan.scheduledGrams)} kg · ${p.retainedCount} earlier assignments kept</p>`
       : p && !current
         ? `<p class="round-total">Showing the last checked plan</p>
-<p class="reference">The current crew changes have not been verified.</p>`
+<p class="reference">The current round changes have not been verified.</p>`
         : `<p class="round-total">${scenario.pickups.length} pickups offered · ${kg(scenario.pickups.reduce((n, p) => n + p.weightGrams, 0))} kg total</p>
 <p class="reference">${esc(scenario.title)} · ${scenario.volunteers.length ? time(Math.min(...scenario.volunteers.map((v) => v.startMinute))) + " onwards" : "no crew entered"}</p>`
-  }<div class="export-actions">
+  }${current && changed() && calculation?.baseline.droppedRoutes.length ? `<details id="baseline-details" class="baseline-details"><summary>${calculation.baseline.droppedRoutes.length} starting route(s) removed from the unchanged plan</summary><ul>${calculation.baseline.droppedRoutes.map((route) => `<li>${esc(referenceScenario.volunteers.find((v) => v.id === route.volunteerId)?.label ?? route.volunteerId)}: ${esc(route.reason)}</li>`).join("")}</ul></details>` : ""}<div class="export-actions">
 <button id="export" class="primary" ${current ? "" : "disabled"}>Download plan <span aria-hidden="true">↓</span>
 </button>
-<button id="print" class="on-dark" ${current ? "" : "disabled"}>Print routes</button>${phase === "error" ? '<button id="retry" class="on-dark">Retry</button>' : ""}</div>
+<button id="print" class="on-dark" ${current ? "" : "disabled"}>Print routes</button><button id="show-export" class="on-dark" ${current ? "" : "disabled"}>Copy or save</button>${phase === "error" ? '<button id="retry" class="on-dark">Retry</button>' : ""}</div>
 </div>`;
   if (phase === "ready") {
     $<HTMLButtonElement>("export").onclick = () => {
       if (phase !== "ready" || !calculation) return;
-      downloadJson(
-        createReport(referenceScenario, scenario, calculation),
-        "breadrelay-plan.json",
-      );
-      announce("The plan report was downloaded.");
+      delivery.download();
     };
     $<HTMLButtonElement>("print").onclick = () => window.print();
+    $("show-export").onclick = () => {
+      delivery.show();
+      $("export-panel").focus();
+    };
   }
   if (phase === "error") $("retry").onclick = () => recalculate();
   $("route-state").textContent =
@@ -273,7 +288,7 @@ function render(): void {
           : "";
   $("routes").classList.toggle("stale", !current);
   $("routes").innerHTML = p
-    ? planHtml(scenario, p, referencePlan)
+    ? planHtml(lastCheckedScenario ?? scenario, p, referencePlan)
     : '<div class="empty-routes"><h3>Checking your first routes…</h3><p>Each volunteer’s timing and carrying limits are being checked.</p></div>';
   $("offer-count").textContent = current
     ? `${scenario.pickups.length} pickups`
@@ -299,10 +314,33 @@ function render(): void {
             : `<span class="not-assigned">Not assigned</span>
 <button class="text-button" id="why-${pickup.id}" data-explain="${esc(pickup.id)}" ${current ? "" : "disabled"} aria-expanded="${activeExplanation === pickup.id}">Why this pickup?</button>`
         }</div>
+${pickupEditorHtml(pickup, open)}
 </li>`;
       })
       .join("") ||
     '<li class="empty-offers">No pickups in this round. Open a round file with your collection offers.</li>';
+  bindPickupEditors(scenario, {
+    markErrors: markFieldErrors,
+    showErrors,
+    apply: (pickup) => {
+      const candidate = structuredClone(scenario);
+      candidate.pickups[
+        candidate.pickups.findIndex((p) => p.id === pickup.id)
+      ] = pickup;
+      const valid = validateScenario(candidate);
+      if (!valid.ok) {
+        showErrors(
+          "The offer could not be applied.",
+          valid.errors.map((e) => ({ path: "file", message: e.message })),
+        );
+        return;
+      }
+      scenario = valid.value;
+      activeExplanation = null;
+      clearErrors();
+      recalculate();
+    },
+  });
   document.querySelectorAll<HTMLButtonElement>("[data-explain]").forEach(
     (b) =>
       (b.onclick = () => {
@@ -355,6 +393,7 @@ function renderAlternative(): void {
   };
 }
 function recalculate(): void {
+  delivery.clear();
   const id = ++revision;
   phase = "pending";
   errorMessage = "";
@@ -370,6 +409,7 @@ function recalculate(): void {
     (c) => {
       if (id !== revision) return;
       calculation = c;
+      lastCheckedScenario = structuredClone(scenario);
       referencePlan = c.referencePlan;
       phase = "ready";
       render();
@@ -387,18 +427,33 @@ function recalculate(): void {
   );
 }
 $("reset").onclick = () => {
+  clearPickupDrafts();
   drafts.clear();
   draftErrors.clear();
   scenario = structuredClone(demo);
   referenceScenario = structuredClone(demo);
   referencePlan = null;
   calculation = null;
+  lastCheckedScenario = null;
   activeExplanation = null;
   clearErrors();
   recalculate();
 };
-$("sample-file").onclick = () =>
-  downloadJson(demo, "breadrelay-sample-round.json");
+$("sample-file").onclick = () => {
+  try {
+    downloadJson(demo, "breadrelay-sample-round.json");
+    clearErrors();
+    announce("Sample file download requested.");
+  } catch {
+    showErrors("The sample download could not start.", [
+      {
+        path: "sample-file",
+        message:
+          "Retry the sample download when browser downloads are available. Your current plan is unchanged.",
+      },
+    ]);
+  }
+};
 $("import").onclick = () => $<HTMLInputElement>("round-file").click();
 $<HTMLInputElement>("round-file").onchange = async (e) => {
   const input = e.target as HTMLInputElement,
@@ -433,10 +488,12 @@ $<HTMLInputElement>("round-file").onchange = async (e) => {
     }
     drafts.clear();
     draftErrors.clear();
-    scenario = parsed.value;
-    referenceScenario = structuredClone(scenario);
+    clearPickupDrafts();
+    scenario = parsed.value.currentScenario;
+    referenceScenario = parsed.value.referenceScenario;
     referencePlan = null;
     calculation = null;
+    lastCheckedScenario = null;
     activeExplanation = null;
     clearErrors();
     recalculate();

@@ -96,7 +96,11 @@ export function calculate(
         summary:
           lossGrams > 0
             ? "Including this pickup reduces the total scheduled weight."
-            : "The same total is possible; keeping earlier assignments and reducing travel decide the route.",
+            : alternative.retainedCount < recovery.retainedCount
+              ? `The same total is possible; the selected plan keeps ${recovery.retainedCount - alternative.retainedCount} more earlier volunteer assignment(s).`
+              : alternative.travelMinutes > recovery.travelMinutes
+                ? `The same weight and assignment retention are possible; the selected plan uses ${alternative.travelMinutes - recovery.travelMinutes} fewer travel minutes.`
+                : "Weight, earlier assignments and travel are equal. The stable ID order selects the current plan.",
       };
     });
   return {

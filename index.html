@@ -61,6 +61,37 @@
         aria-labelledby="result-title"
         aria-busy="true"
       ></section>
+      <section
+        id="export-panel"
+        class="export-panel"
+        aria-labelledby="export-title"
+        tabindex="-1"
+        hidden
+      >
+        <div class="section-heading">
+          <h2 id="export-title">Save this plan</h2>
+          <button id="close-export" class="quiet">Close</button>
+        </div>
+        <p id="export-help">
+          A plan report keeps the starting and revised rounds. Opening it
+          recalculates the routes. A round file starts a fresh comparison.
+        </p>
+        <div class="save-actions">
+          <button id="copy-export" class="apply">Copy JSON</button
+          ><button id="save-round" class="quiet">Save current round</button>
+        </div>
+        <p id="export-feedback" role="status"></p>
+        <label for="export-text" id="export-label"
+          >Plan report JSON — select to copy manually</label
+        >
+        <textarea
+          id="export-text"
+          readonly
+          rows="9"
+          spellcheck="false"
+          aria-describedby="export-help"
+        ></textarea>
+      </section>
       <div class="workspace">
         <section class="crew-section" aria-labelledby="crew-title">
           <div class="section-heading">
@@ -115,6 +146,18 @@
           Equal results use a stable ID order.
         </p>
         <p id="travel-source"></p>
+        <p>
+          Travel minutes from each row location to each column location. Return
+          travel can differ from outward travel. Replace these values by opening
+          a complete round file.
+        </p>
+        <div
+          id="travel-table"
+          class="travel-table"
+          tabindex="0"
+          role="region"
+          aria-label="Travel minutes table; scroll horizontally for all destinations"
+        ></div>
         <p>
           Scheduled weight is a plan, not a record of food delivered. Travel
           times are entered values; this app does not check roads or traffic.
