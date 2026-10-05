@@ -58,8 +58,18 @@ export function validateScenario(input: unknown): Validation<Scenario> {
     else ids.add(x);
   };
   const pickups = Array.isArray(input.pickups) ? input.pickups : [];
+  const volunteers = Array.isArray(input.volunteers) ? input.volunteers : [];
   if (!Array.isArray(input.pickups) || pickups.length > 10)
     fail("pickups", "Include a list of at most 10 pickups.");
+  if (!Array.isArray(input.volunteers) || volunteers.length > 3)
+    fail("volunteers", "Include a list of at most 3 volunteers.");
+  if (
+    !Array.isArray(input.pickups) ||
+    pickups.length > 10 ||
+    !Array.isArray(input.volunteers) ||
+    volunteers.length > 3
+  )
+    return { ok: false, errors };
   pickups.forEach((x, i) => {
     const base = `pickups.${i}`;
     if (!object(x)) {
@@ -83,9 +93,6 @@ export function validateScenario(input: unknown): Validation<Scenario> {
         "Allow enough time to finish collection before closing.",
       );
   });
-  const volunteers = Array.isArray(input.volunteers) ? input.volunteers : [];
-  if (!Array.isArray(input.volunteers) || volunteers.length > 3)
-    fail("volunteers", "Include a list of at most 3 volunteers.");
   volunteers.forEach((x, i) => {
     const base = `volunteers.${i}`;
     if (!object(x)) {
@@ -149,7 +156,43 @@ export function validateScenario(input: unknown): Validation<Scenario> {
       }
     }
   }
-  return errors.length
-    ? { ok: false, errors }
-    : { ok: true, value: structuredClone(input) as unknown as Scenario };
+  if (errors.length) return { ok: false, errors };
+  const source = input as unknown as Scenario;
+  // Normalize to the validated schema. Extra JSON never enters solver inputs or saved reports.
+  const value: Scenario = {
+    schemaVersion: 1,
+    title: source.title,
+    serviceDate: source.serviceDate,
+    timezone: "Asia/Hong_Kong",
+    dataKind: source.dataKind,
+    travelSource: source.travelSource,
+    hub: { id: "hub", label: source.hub.label },
+    maxStops: 3,
+    pickups: source.pickups.map((p) => ({
+      id: p.id,
+      label: p.label,
+      weightGrams: p.weightGrams,
+      readyMinute: p.readyMinute,
+      closeMinute: p.closeMinute,
+      serviceMinutes: p.serviceMinutes,
+      hubDeadlineMinute: p.hubDeadlineMinute,
+    })),
+    volunteers: source.volunteers.map((v) => ({
+      id: v.id,
+      label: v.label,
+      capacityGrams: v.capacityGrams,
+      startMinute: v.startMinute,
+      endMinute: v.endMinute,
+      available: v.available,
+    })),
+    travelMinutes: Object.fromEntries(
+      locations.map((a) => [
+        a,
+        Object.fromEntries(
+          locations.map((b) => [b, source.travelMinutes[a][b]]),
+        ),
+      ]),
+    ),
+  };
+  return { ok: true, value };
 }

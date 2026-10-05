@@ -11,7 +11,9 @@
     "preview": "node scripts/serve-static.mjs",
     "check:browser": "node scripts/browser-check.mjs && node scripts/core-check.mjs",
     "check:core": "node scripts/core-check.mjs",
-    "benchmark": "node scripts/benchmark.mjs"
+    "benchmark": "node scripts/benchmark.mjs",
+    "evaluate": "node --experimental-strip-types scripts/evaluate-baselines.ts",
+    "check:webkit": "node scripts/webkit-check.mjs"
   },
   "devDependencies": {
     "vite": "8.3.2",

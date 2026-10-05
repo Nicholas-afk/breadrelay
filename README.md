@@ -39,6 +39,10 @@ Native HTML/CSS, TypeScript, Vite and a module worker. An exact bounded route en
 
 The relative asset build is compatible with static project-subpath hosting. GitHub Pages deployment has not yet been performed. No server is needed.
 
+Only validated schema fields are kept when opening a round. Unspecified extra JSON is discarded, keeping saved reports within the supported format. Over-limit lists stop at count validation; error summaries show at most12 corrections at once.
+
 ## Verify
 
 `npm test` covers the real optimizer, independent plan validation, scenario/file contracts and hand-checked edge fixtures;350 generated objectives are compared with an independent exhaustive oracle. `npm run build` performs strict type checking. `npm run check:browser` runs both compiled-browser suites, including keyboard cancellation-to-report, report restoration, offer edits, print/mobile layouts, offline-after-load, worker failure, timeout/retry, revision isolation and download/clipboard failures. Injected failures are test conditions, not application metrics. `npm run benchmark` measures30 complete bounded calculations in the compiled worker. Evidence and limitations are in `docs/evaluation.md`.
+
+`npm run evaluate` replays100 seeded synthetic cancellation rounds against unchanged routes and a defined weight-first greedy insertion comparator. It reports modeled scheduled weight, not food delivered or field-effect estimates. `npx playwright install webkit` followed by `npm run check:webkit` runs the additional browser-engine journey. A desktop WebKit engine at phone widths does not replace real Safari/iPhone or assistive-technology testing.

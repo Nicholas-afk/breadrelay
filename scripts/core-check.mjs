@@ -70,6 +70,24 @@ try {
   await page.locator("#toggle-volunteer-a").click();
   await ready();
   assert.match(await page.locator("#result-title").innerText(), /^26/);
+  assert.match(
+    await page.locator("#unassigned-note").innerText(),
+    /12 kg.*3 pickups/,
+  );
+  await page.locator("#review-unassigned").click();
+  assert.equal(
+    await page.evaluate(() => document.activeElement.id),
+    "why-bakery-c",
+  );
+  await page.keyboard.press("Enter");
+  assert.match(
+    await page.locator("#alternative").innerText(),
+    /23 kg scheduled/,
+  );
+  await page.locator("#close-alternative").click();
+  check(
+    "Current result leads directly to unassigned-pickup trade-offs, with keyboard focus",
+  );
   const downloadEvent = page.waitForEvent("download");
   await page.locator("#export").click();
   const download = await downloadEvent;
@@ -327,6 +345,38 @@ try {
       check(
         "Missing directed travel rejects the file while preserving the complete applied round",
       );
+      const malformed = { ...operator, pickups: Array(50000).fill({}) };
+      let rejectedAt = Date.now();
+      await page
+        .locator("#round-file")
+        .setInputFiles({
+          name: "many.json",
+          mimeType: "application/json",
+          buffer: Buffer.from(JSON.stringify(malformed)),
+        });
+      await page.waitForFunction(() =>
+        document
+          .querySelector("#error-box")
+          ?.textContent.includes("at most 10 pickups"),
+      );
+      assert.ok((await page.locator("#error-box li").count()) <= 12);
+      result.overLimitFileRejectMs = Date.now() - rejectedAt;
+      const manyErrors = { ...operator, pickups: Array(10).fill({}) };
+      await page
+        .locator("#round-file")
+        .setInputFiles({
+          name: "fields.json",
+          mimeType: "application/json",
+          buffer: Buffer.from(JSON.stringify(manyErrors)),
+        });
+      await page.waitForFunction(() =>
+        document.querySelector("#error-box")?.textContent.includes("Showing"),
+      );
+      assert.ok((await page.locator("#error-box li").count()) <= 12);
+      assert.match(await page.locator("#result-title").innerText(), /^38/);
+      check(
+        "Malformed in-size files are rejected with bounded feedback and preserve the applied round",
+      );
       await page.locator("#reset").click();
       await ready();
       const tabTo = async (id, backwards = false) => {
@@ -373,6 +423,14 @@ try {
       assert.equal(
         await page.locator("#routes .stop-weight").last().innerText(),
         "12 kg",
+      );
+      assert.match(
+        await page
+          .locator("#pickup-limits-bakery-f")
+          .locator("..")
+          .locator(".offer-assignment")
+          .innerText(),
+        /Checking/,
       );
       await page.locator("#pickup-limits-bakery-c summary").click();
       await page.locator("#weight-bakery-c").fill("4.125");

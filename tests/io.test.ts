@@ -61,3 +61,43 @@ test("scenario files start a fresh reference; broken or unrelated reports are re
   }
   assert.equal(JSON.stringify(demo), original);
 });
+
+test("an in-size file with far too many records is rejected with bounded useful feedback", () => {
+  for (const field of ["pickups", "volunteers"]) {
+    const text = JSON.stringify({ ...demo, [field]: Array(50000).fill({}) });
+    assert.ok(new TextEncoder().encode(text).length < 256 * 1024);
+    const parsed = parseRound(text);
+    if (parsed.ok) assert.fail("Over-limit records were accepted");
+    assert.ok(
+      parsed.errors.length <= 4,
+      "Do not enumerate errors for thousands of unsupported records",
+    );
+    assert.ok(
+      parsed.errors.some((e) => e.path === field && /at most/.test(e.message)),
+    );
+  }
+});
+
+test("accepted rounds discard unvalidated extras and their saved reports remain reopenable", () => {
+  const text = JSON.stringify({
+    ...demo,
+    notes: "x".repeat(150000),
+    hub: { ...demo.hub, secret: "not part of the round schema" },
+    pickups: demo.pickups.map((p) => ({ ...p, extra: "omit" })),
+  });
+  assert.ok(new TextEncoder().encode(text).length < 256 * 1024);
+  const parsed = parseRound(text);
+  if (!parsed.ok) assert.fail(JSON.stringify(parsed.errors));
+  const current = parsed.value.currentScenario;
+  assert.equal("notes" in current, false);
+  assert.equal("secret" in current.hub, false);
+  assert.equal("extra" in current.pickups[0], false);
+  const report = createReport(
+    parsed.value.referenceScenario,
+    current,
+    calculate(current, parsed.value.referenceScenario, null),
+  );
+  const saved = JSON.stringify(report, null, 2);
+  assert.ok(new TextEncoder().encode(saved).length < 256 * 1024);
+  assert.equal(parseRound(saved).ok, true);
+});

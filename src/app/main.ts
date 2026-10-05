@@ -53,9 +53,11 @@ function clearErrors(): void {
 }
 function showErrors(title: string, errors: FieldError[]): void {
   const box = $("error-box");
+  const shown = errors.slice(0, 12);
   box.innerHTML = `<h2 id="error-title">${esc(title)}</h2>
 <p>Your last applied round is unchanged.</p>
-<ul>${errors
+${errors.length > shown.length ? `<p>Showing the first ${shown.length} of ${errors.length} corrections. Fix these, then open the file again.</p>` : ""}
+<ul>${shown
     .map(
       (e) => `<li>
 <a href="#${e.path === "file" ? "import" : esc(e.path)}">${esc(e.message)}</a>
@@ -290,11 +292,16 @@ function render(): void {
   $("routes").innerHTML = p
     ? planHtml(lastCheckedScenario ?? scenario, p, referencePlan)
     : '<div class="empty-routes"><h3>Checking your first routes…</h3><p>Each volunteer’s timing and carrying limits are being checked.</p></div>';
+  const unassigned = scenario.pickups.filter(
+    (pickup) => !p?.assignedIds.includes(pickup.id),
+  );
+  $("unassigned-note").hidden = !current || !unassigned.length;
+  if (current && unassigned.length)
+    $("unassigned-note").innerHTML =
+      `${kg(unassigned.reduce((n, pickup) => n + pickup.weightGrams, 0))} kg across ${unassigned.length} pickups is not scheduled. <a id="review-unassigned" href="#why-${unassigned[0].id}">Review the trade-offs</a>.`;
   $("offer-count").textContent = current
     ? `${scenario.pickups.length} pickups`
-    : calculation
-      ? "Last checked"
-      : "Checking…";
+    : "Current inputs";
   $("offers").innerHTML =
     scenario.pickups
       .map((pickup) => {
@@ -309,9 +316,11 @@ function render(): void {
 <div class="offer-deadline">
 <span class="mobile-label">Hub by</span>${time(pickup.hubDeadlineMinute)}</div>
 <div class="offer-assignment">${
-          route
-            ? `<span>${esc(scenario.volunteers.find((v) => v.id === route.volunteerId)!.label)}</span>`
-            : `<span class="not-assigned">Not assigned</span>
+          !current
+            ? `<span class="not-checked">${phase === "pending" ? "Checking…" : "Not checked"}</span>`
+            : route
+              ? `<span>${esc(scenario.volunteers.find((v) => v.id === route.volunteerId)!.label)}</span>`
+              : `<span class="not-assigned">Not assigned</span>
 <button class="text-button" id="why-${pickup.id}" data-explain="${esc(pickup.id)}" ${current ? "" : "disabled"} aria-expanded="${activeExplanation === pickup.id}">Why this pickup?</button>`
         }</div>
 ${pickupEditorHtml(pickup, open)}

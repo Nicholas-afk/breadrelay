@@ -113,6 +113,7 @@
             <span id="route-state"></span>
           </div>
           <div id="routes"></div>
+          <p id="unassigned-note" class="unassigned-note" hidden></p>
         </section>
       </div>
       <section class="offers-section" aria-labelledby="offers-title">
@@ -146,6 +147,11 @@
           Equal results use a stable ID order.
         </p>
         <p id="travel-source"></p>
+        <p>
+          The unchanged plan keeps each starting route in its original order and
+          drops a whole route if it no longer fits. The revised plan searches
+          feasible routes under the current inputs.
+        </p>
         <p>
           Travel minutes from each row location to each column location. Return
           travel can differ from outward travel. Replace these values by opening
