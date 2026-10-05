@@ -1,0 +1,152 @@
+{
+  "schemaVersion": 1,
+  "title": "Evening bread collection",
+  "serviceDate": "2026-10-06",
+  "timezone": "Asia/Hong_Kong",
+  "dataKind": "synthetic",
+  "travelSource": "Illustrative fixed travel minutes; no live roads or traffic.",
+  "hub": {
+    "id": "hub",
+    "label": "Collection hub"
+  },
+  "maxStops": 3,
+  "pickups": [
+    {
+      "id": "bakery-a",
+      "label": "Bakery A",
+      "weightGrams": 7000,
+      "readyMinute": 1151,
+      "closeMinute": 1188,
+      "hubDeadlineMinute": 1200,
+      "serviceMinutes": 3
+    },
+    {
+      "id": "bakery-b",
+      "label": "Bakery B",
+      "weightGrams": 7000,
+      "readyMinute": 1140,
+      "closeMinute": 1177,
+      "hubDeadlineMinute": 1182,
+      "serviceMinutes": 3
+    },
+    {
+      "id": "bakery-c",
+      "label": "Bakery C",
+      "weightGrams": 4000,
+      "readyMinute": 1151,
+      "closeMinute": 1188,
+      "hubDeadlineMinute": 1199,
+      "serviceMinutes": 3
+    },
+    {
+      "id": "bakery-d",
+      "label": "Bakery D",
+      "weightGrams": 4000,
+      "readyMinute": 1142,
+      "closeMinute": 1174,
+      "hubDeadlineMinute": 1188,
+      "serviceMinutes": 3
+    },
+    {
+      "id": "bakery-e",
+      "label": "Bakery E",
+      "weightGrams": 4000,
+      "readyMinute": 1142,
+      "closeMinute": 1168,
+      "hubDeadlineMinute": 1194,
+      "serviceMinutes": 3
+    },
+    {
+      "id": "bakery-f",
+      "label": "Bakery F",
+      "weightGrams": 12000,
+      "readyMinute": 1145,
+      "closeMinute": 1187,
+      "hubDeadlineMinute": 1195,
+      "serviceMinutes": 3
+    }
+  ],
+  "volunteers": [
+    {
+      "id": "volunteer-a",
+      "label": "Volunteer A",
+      "capacityGrams": 26000,
+      "startMinute": 1148,
+      "endMinute": 1210,
+      "available": true
+    },
+    {
+      "id": "volunteer-b",
+      "label": "Volunteer B",
+      "capacityGrams": 31000,
+      "startMinute": 1146,
+      "endMinute": 1210,
+      "available": true
+    }
+  ],
+  "travelMinutes": {
+    "hub": {
+      "hub": 0,
+      "bakery-a": 9,
+      "bakery-b": 10,
+      "bakery-c": 5,
+      "bakery-d": 3,
+      "bakery-e": 6,
+      "bakery-f": 4
+    },
+    "bakery-a": {
+      "hub": 9,
+      "bakery-a": 0,
+      "bakery-b": 3,
+      "bakery-c": 5,
+      "bakery-d": 6,
+      "bakery-e": 7,
+      "bakery-f": 6
+    },
+    "bakery-b": {
+      "hub": 10,
+      "bakery-a": 3,
+      "bakery-b": 0,
+      "bakery-c": 6,
+      "bakery-d": 7,
+      "bakery-e": 9,
+      "bakery-f": 7
+    },
+    "bakery-c": {
+      "hub": 5,
+      "bakery-a": 5,
+      "bakery-b": 6,
+      "bakery-c": 0,
+      "bakery-d": 3,
+      "bakery-e": 4,
+      "bakery-f": 1
+    },
+    "bakery-d": {
+      "hub": 3,
+      "bakery-a": 6,
+      "bakery-b": 7,
+      "bakery-c": 3,
+      "bakery-d": 0,
+      "bakery-e": 6,
+      "bakery-f": 2
+    },
+    "bakery-e": {
+      "hub": 6,
+      "bakery-a": 7,
+      "bakery-b": 9,
+      "bakery-c": 4,
+      "bakery-d": 6,
+      "bakery-e": 0,
+      "bakery-f": 4
+    },
+    "bakery-f": {
+      "hub": 4,
+      "bakery-a": 6,
+      "bakery-b": 7,
+      "bakery-c": 1,
+      "bakery-d": 2,
+      "bakery-e": 4,
+      "bakery-f": 0
+    }
+  }
+}
