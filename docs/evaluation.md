@@ -1,6 +1,6 @@
 # Verification of the core product
 
-The dated sections preserve earlier runs. The final core/evaluation snapshot below supersedes their counts and outstanding product work.
+The dated sections preserve earlier runs. The latest dated snapshot below supersedes earlier counts and outstanding product work.
 
 Recorded 6 October 2026 at 01:41:49 HKT (5 October, 17:41:49 UTC). This is prototype evidence, not operator or delivered-food evidence.
 
@@ -47,3 +47,11 @@ Final screenshot inspection found the open mobile save panel above the crew/resu
 Fresh review's two Important import issues are fixed: unsupported counts stop before record traversal; the visible error summary caps at12 corrections; canonical scenarios keep only validated fields, so extra input data cannot inflate a saved report beyond the reopen limit. Native regressions were observed failing before the fixes. Pending assignment rows show Checking/Not checked; old route details retain the inputs belonging to their checked result.
 
 Usefulness and visual polish have different evidence: this is a working bounded optimizer and complete local workflow, with an operational interface, but no genuine external operator feedback or observed delivered-food outcome. Routing and multi-stop food rescue already exist; the transparent forced-pickup trade-off is a plausible product differentiator, not a proven novel algorithm or vendor advantage. The synthetic comparison is not a representative field study. WebKit is a desktop engine, not physical iPhone/Safari or assistive-technology evidence. Structural setup still requires complete JSON and supplied travel minutes. Fresh offline reload and Firefox are unverified. Public deployment, actual-product video, eligibility resolution and submission remain unfinished. The durable project record contains the official-rubric assessment and ranked next work.
+
+## Evidence-based refinement — 6 October, 03:05 HKT
+
+The earlier screen showed23 kg versus26 kg and a whole alternative route, but did not state the substitution. The improved explanation derives pickup additions/removals and volunteer changes directly from the two independently checked plans. The sample now states Bakery C4 kg would be collected and Bakery B7 kg left out. All three sample exclusions show that same3 kg trade-off without changing the selected26 kg plan. Infeasible cases show no invented alternative. Directional crew copy that was incorrect on phones is now layout-independent.
+
+The new compiled-browser acceptance initially failed because `#plan-difference` was absent. It now passes6 checks: actual cancellation; all three explicit alternatives/focus; agreement with downloaded plan IDs/totals; desktop390/320 layouts; infeasible explanation; direct refresh and fictional-data labels. A new native test compares two feasible same-weight plans with swapped volunteer assignments and imported HTML-like labels, checking actual transfer information and safe text rendering. Native suite16/16, full Chrome45 checks and WebKit10 checks pass; the additional6 local improvement checks pass too. Desktop/phone screenshots were inspected. These demonstrate behavior and visible composition, not measured human comprehension.
+
+The intended judging gains are clearer differentiation through inspectable counterfactual changes, Functionality and Presentation through a straightforward reproducible journey, and Technical Execution through plan/report agreement. No novelty, adoption or field-effect score is inferred from the UI change. Engine code/worker bytes are unchanged; the earlier350-case oracle,100-case baseline comparison and worker benchmark still apply. The stable pre-refinement source/build is retained at tag `core-20261006-9c8cbb3`. Public hosting verification is recorded separately after actual deployment; the age/enrollment/consent and video/submission gaps remain.

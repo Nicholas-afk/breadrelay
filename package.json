@@ -13,7 +13,8 @@
     "check:core": "node scripts/core-check.mjs",
     "benchmark": "node scripts/benchmark.mjs",
     "evaluate": "node --experimental-strip-types scripts/evaluate-baselines.ts",
-    "check:webkit": "node scripts/webkit-check.mjs"
+    "check:webkit": "node scripts/webkit-check.mjs",
+    "check:improvements": "node scripts/improvement-check.mjs"
   },
   "devDependencies": {
     "vite": "8.3.2",

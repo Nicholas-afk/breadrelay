@@ -59,9 +59,17 @@ try {
     await page.locator("#alternative").innerText(),
     /23 kg scheduled/,
   );
+  assert.match(
+    await page.locator("#diff-added").innerText(),
+    /Bakery C.*4 kg/s,
+  );
+  assert.match(
+    await page.locator("#diff-removed").innerText(),
+    /Bakery B.*7 kg/s,
+  );
   await page.locator("#close-alternative").click();
   check(
-    "Keyboard focus enters the genuine 23 kg counterfactual and returns on close",
+    "Keyboard focus enters the 23 kg counterfactual with explicit 4 kg add/7 kg removal and returns on close",
   );
   const event = page.waitForEvent("download");
   await page.locator("#export").click();

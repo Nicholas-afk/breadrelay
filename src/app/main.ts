@@ -11,7 +11,7 @@ import { validateScenario } from "../domain/scenario.ts";
 import { parseRound, downloadJson } from "../io/round-file.ts";
 import { PlanDelivery } from "../io/plan-delivery.ts";
 import { WorkerClient } from "./worker-client.ts";
-import { esc, kg, time, planHtml } from "../ui/routes.ts";
+import { esc, kg, time, planHtml, planDifferenceHtml } from "../ui/routes.ts";
 import {
   pickupEditorHtml,
   bindPickupEditors,
@@ -246,7 +246,7 @@ function render(): void {
 <p class="eyebrow">${phase === "pending" ? "CHECKING THE ROUND" : phase === "error" ? "LAST VALID RESULT" : changed() ? "REVISED COLLECTION PLAN" : "STARTING COLLECTION PLAN"}</p>
 <h2 id="result-title">${p ? kg(p.scheduledGrams) : "—"}<span> kg ${current ? "scheduled" : "last checked"}</span>
 </h2>
-<p>${phase === "pending" ? "Checking collection windows, carrying limits and return times…" : phase === "error" ? esc(errorMessage) : !available ? "No volunteers available. Restore a volunteer to plan pickups." : gain > 0 ? `<strong>${kg(gain)} kg more</strong> than keeping the unchanged routes.` : changed() ? "No extra weight fits beyond the unchanged routes." : "Change the crew below to see what can be reassigned."}</p>
+<p>${phase === "pending" ? "Checking collection windows, carrying limits and return times…" : phase === "error" ? esc(errorMessage) : !available ? "No volunteers available. Restore a volunteer to plan pickups." : gain > 0 ? `<strong>${kg(gain)} kg more</strong> than keeping the unchanged routes.` : changed() ? "No extra weight fits beyond the unchanged routes." : "Change your crew to see what can be reassigned."}</p>
 </div>
 <div class="result-side">${
     p && baseline && changed() && current
@@ -390,7 +390,7 @@ function renderAlternative(): void {
       ? `<p class="tradeoff">
 <strong>${kg(ex.alternative.scheduledGrams)} kg scheduled</strong> if ${esc(pickup.label)} is included${ex.lossGrams ? ` — ${kg(ex.lossGrams)} kg less than the revised plan.` : "."}</p>`
       : ""
-  }<p>${esc(ex.summary)}</p>${ex.alternative ? planHtml(scenario, ex.alternative, referencePlan, true) : "<p>Check this pickup’s window and return deadline, or restore a volunteer. A spare vehicle or extra time is not assumed.</p>"}<p class="alternative-caption">This is an explanation; your selected plan has not changed.</p>`;
+  }<p>${esc(ex.summary)}</p>${ex.alternative ? planDifferenceHtml(scenario, calculation!.recovery, ex.alternative) + planHtml(scenario, ex.alternative, referencePlan, true) : "<p>Check this pickup’s window and return deadline, or restore a volunteer. A spare vehicle or extra time is not assumed.</p>"}<p class="alternative-caption">This is an explanation; your selected plan has not changed.</p>`;
   $("close-alternative").onclick = () => {
     const previous = activeExplanation;
     activeExplanation = null;

@@ -808,6 +808,48 @@
   .tradeoff {
     color: var(--green);
   }
+  .plan-difference {
+    max-width: 740px;
+    margin: 22px 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 18px 0;
+  }
+  .plan-difference > p {
+    margin-top: 5px;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .plan-difference dl {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+    gap: 18px 32px;
+    margin-top: 16px;
+  }
+  .plan-difference dt {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .plan-difference dd {
+    margin: 0;
+  }
+  .plan-difference ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .plan-difference li {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 4px 16px;
+    margin-top: 5px;
+  }
+  .diff-reassigned {
+    grid-column: 1 / -1;
+  }
   .alternative-caption {
     color: var(--muted);
     font-style: italic;
