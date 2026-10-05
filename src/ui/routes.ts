@@ -69,7 +69,7 @@ export function planHtml(
   return p.routes.length
     ? `<div class="route-grid">${p.routes.map((r) => routeHtml(s, r, reference, alternative)).join("")}</div>`
     : `<div class="empty-routes">
-<h3>No pickups fit this crew.</h3>
-<p>${s.volunteers.some((v) => v.available) ? "Check carrying limits and collection times, or add an available volunteer in your round file." : "Restore a volunteer below Who’s collecting to check the round again."}</p>
+<h3>${s.pickups.length ? "No pickups fit this crew." : "No pickups in this round."}</h3>
+<p>${!s.pickups.length ? "Open a round file containing the bread offers to check collection routes." : s.volunteers.some((v) => v.available) ? "Check carrying limits and collection times, or add an available volunteer in your round file." : "Restore a volunteer below Who’s collecting to check the round again."}</p>
 </div>`;
 }
