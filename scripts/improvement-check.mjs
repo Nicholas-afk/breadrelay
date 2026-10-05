@@ -114,11 +114,9 @@ try {
       ),
       false,
     );
-    await page
-      .locator("#alternative")
-      .screenshot({
-        path: resolve(output, `breadrelay-tradeoff-${width}.png`),
-      });
+    await page.locator("#alternative").screenshot({
+      path: resolve(output, `breadrelay-tradeoff-${width}.png`),
+    });
     result.screenshots.push(`breadrelay-tradeoff-${width}.png`);
   }
   check(
@@ -143,6 +141,50 @@ try {
   assert.match(await page.locator("#data-note").innerText(), /Fictional/);
   check(
     "Direct refresh recomputes the labelled sample and uses layout-independent crew wording",
+  );
+  const longRound = JSON.parse(
+    await readFile(
+      new URL("../src/fixtures/demo.json", import.meta.url),
+      "utf8",
+    ),
+  );
+  longRound.pickups.find((p) => p.id === "bakery-c").label = "C".repeat(80);
+  longRound.volunteers[0].available = false;
+  await Promise.all([
+    page.waitForRequest((r) =>
+      /\/assets\/worker-[^/]+\.js$/.test(new URL(r.url()).pathname),
+    ),
+    page.locator("#round-file").setInputFiles({
+      name: "long-label.json",
+      mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(longRound)),
+    }),
+  ]);
+  await ready();
+  await page.locator("#why-bakery-c").click();
+  const longLabelWidth = await page.evaluate(
+    () => document.documentElement.scrollWidth,
+  );
+  result.longLabelPageWidth = longLabelWidth;
+  assert.equal(
+    longLabelWidth,
+    320,
+    "A valid 80-character label must fit the 320 px page",
+  );
+  assert.equal(
+    await page.locator("#diff-added strong").innerText(),
+    "C".repeat(80),
+  );
+  assert.ok(
+    (await page.locator("#close-alternative").boundingBox()).width >= 44,
+    "The close control remains a usable phone target beside a long label",
+  );
+  await page.locator("#alternative").screenshot({
+    path: resolve(output, "breadrelay-tradeoff-long-label-320.png"),
+  });
+  result.screenshots.push("breadrelay-tradeoff-long-label-320.png");
+  check(
+    "Valid unbroken80-character imported labels wrap without hiding text or widening the phone page",
   );
   assert.deepEqual(result.errors, []);
   assert.deepEqual(result.externalRequests, []);

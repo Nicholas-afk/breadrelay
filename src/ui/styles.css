@@ -20,6 +20,7 @@
   }
   body {
     margin: 0;
+    overflow-wrap: anywhere;
   }
   h1,
   h2,
@@ -795,6 +796,13 @@
     line-height: 1.3;
     margin-top: 7px;
   }
+  .alternative-heading > div {
+    min-width: 0;
+  }
+  .alternative-heading > button {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
   .alternative > p {
     font-size: 15px;
     line-height: 1.6;
@@ -846,6 +854,11 @@
     justify-content: space-between;
     gap: 4px 16px;
     margin-top: 5px;
+  }
+  .plan-difference li > strong,
+  .plan-difference li > span {
+    min-width: 0;
+    max-width: 100%;
   }
   .diff-reassigned {
     grid-column: 1 / -1;

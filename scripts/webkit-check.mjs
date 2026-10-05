@@ -158,6 +158,40 @@ try {
   check(
     "Already-loaded app handles network loss via the bounded calculation fallback",
   );
+  const longRound = JSON.parse(
+    await readFile(
+      new URL("../src/fixtures/demo.json", import.meta.url),
+      "utf8",
+    ),
+  );
+  longRound.pickups.find((p) => p.id === "bakery-c").label = "C".repeat(80);
+  longRound.volunteers[0].available = false;
+  await Promise.all([
+    page.waitForRequest((r) =>
+      /\/assets\/worker-[^/]+\.js$/.test(new URL(r.url()).pathname),
+    ),
+    page.locator("#round-file").setInputFiles({
+      name: "long-label.json",
+      mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(longRound)),
+    }),
+  ]);
+  await ready();
+  await page.locator("#why-bakery-c").click();
+  assert.equal(
+    await page.evaluate(() => document.documentElement.scrollWidth),
+    320,
+  );
+  assert.equal(
+    await page.locator("#diff-added strong").innerText(),
+    "C".repeat(80),
+  );
+  assert.ok(
+    (await page.locator("#close-alternative").boundingBox()).width >= 44,
+  );
+  check(
+    "Valid unbroken80-character labels fit the 320 px page with a genuine forced-pickup explanation",
+  );
   assert.deepEqual(result.errors, []);
   assert.deepEqual(result.externalRequests, []);
   result.status = "passed";
