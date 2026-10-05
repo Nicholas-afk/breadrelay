@@ -1,2 +1,118 @@
 @media print {
-@page{margin:14mm}body{background:white;color:black}.masthead,.page-heading,.sample-note,.file-actions,.crew-section,.export-actions,.method,.page-footer,.error-box,.skip-link,.alternative,.text-button{display:none!important}.page{padding:0;max-width:none}.result-band{display:block;background:white;color:black;padding:0 0 18px;border-bottom:2px solid black}.result-main .eyebrow,.result-main>p:last-child,.reference,.comparison small{color:black}.result-main h2{font-size:32px}.result-side{border:0;padding:8px 0 0}.workspace{display:block;margin:20px 0}.route-grid{display:block}.route{break-inside:avoid;margin-top:20px}.route-grid>.route:not(:first-child){border-left:0;padding-left:0}.stops li{padding-bottom:14px}.stops li:before,.stops li:after{display:none}.stops p,.stop-weight,.route-meta{color:black}.pickup-list{font-size:12px}.offer-labels,.offer-row{display:grid;grid-template-columns:1fr 1fr 1fr 1fr}.offer-labels{margin-top:15px}.offer-row{break-inside:avoid}.mobile-label{display:none}.stale::before{content:'STALE RESULT — DO NOT DISPATCH';color:black;font-weight:bold}.result-main h2 span{font-size:22px}}
+  @page {
+    margin: 14mm;
+  }
+  body {
+    background: white;
+    color: black;
+  }
+  .masthead,
+  .page-heading,
+  .sample-note,
+  .file-actions,
+  .crew-section,
+  .export-actions,
+  .method,
+  .page-footer,
+  .error-box,
+  .skip-link,
+  .alternative,
+  .text-button {
+    display: none !important;
+  }
+  .page {
+    padding: 0;
+    max-width: none;
+  }
+  .result-band {
+    display: block;
+    background: white;
+    color: black;
+    padding: 0 0 18px;
+    border-bottom: 2px solid black;
+  }
+  .result-main .eyebrow,
+  .result-main > p:last-child,
+  .reference,
+  .comparison small {
+    color: black;
+  }
+  .result-main h2 {
+    font-size: 32px;
+  }
+  .result-side {
+    border: 0;
+    padding: 8px 0 0;
+  }
+  .workspace {
+    display: block;
+    margin: 20px 0;
+  }
+  .route-grid {
+    display: block;
+  }
+  .route {
+    break-inside: avoid;
+    margin-top: 20px;
+  }
+  .route-grid > .route:not(:first-child) {
+    border-left: 0;
+    padding-left: 0;
+  }
+  .stops li {
+    padding-bottom: 14px;
+  }
+  .stops li:before,
+  .stops li:after {
+    display: none;
+  }
+  .stops p,
+  .stop-weight,
+  .route-meta {
+    color: black;
+  }
+  .pickup-list {
+    font-size: 12px;
+  }
+  .offer-labels,
+  .offer-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+  .offer-labels {
+    margin-top: 15px;
+  }
+  .offer-row {
+    break-inside: avoid;
+  }
+  .mobile-label {
+    display: none;
+  }
+  .stale::before {
+    content: "STALE RESULT — DO NOT DISPATCH";
+    color: black;
+    font-weight: bold;
+  }
+  .result-main h2 span {
+    font-size: 22px;
+  }
+}
+
+@media print {
+  .print-context {
+    display: block;
+    margin-bottom: 20px;
+  }
+  .print-context h1 {
+    font-family: inherit;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 0;
+    margin: 0 0 8px;
+  }
+  .print-context p {
+    font-size: 12px;
+    line-height: 1.5;
+    margin-top: 4px;
+  }
+}
