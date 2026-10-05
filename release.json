@@ -1,0 +1,22 @@
+{
+  "kind": "BreadRelay verified static release",
+  "sourceCommit": "410f0376c3dfe5a28849e61c843e0e34a44c5235",
+  "builtAt": "2026-10-05T19:12:38.612957+00:00",
+  "assetsSha256": {
+    ".nojekyll": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "assets/index-DPJnG4K1.js": "3fea46c89f11e93e645c2e4b900312f8d021b7cd4e4278f27396dd724f54d646",
+    "assets/index-DSQn4G9_.css": "cbad719006855ea5ff1a1eebd527e8195a003d064f16daeb23dd74c836d61146",
+    "assets/worker-DYHBubya.js": "9a6ae5baa8a23b0fee6d9aa913f87b7fa0066522f061052faff55f4c72d84f78",
+    "index.html": "ee5c75c0b37216b1d5f1fd3ebc2c77b96b7ded34790bf30d1a4b340884447d88"
+  },
+  "actualDeliveryVerified": false,
+  "localVerification": {
+    "nativeTestsPassed": 16,
+    "independentOracleComparisons": 350,
+    "chromeInterfaceChecks": 24,
+    "chromeCoreChecks": 21,
+    "chromeImprovementChecks": 7,
+    "webkitEngineChecks": 11
+  },
+  "limits": "Synthetic demonstration; fixed entered travel; before departure; bounded10 pickups/3 volunteers/3 stops. No operator endorsement or field-outcome claim."
+}
