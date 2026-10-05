@@ -1152,6 +1152,9 @@
     .result-band {
       order: 4;
     }
+    .export-panel {
+      order: 5;
+    }
     .route-section {
       order: 5;
       margin: 32px 0 24px;

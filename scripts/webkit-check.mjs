@@ -78,13 +78,11 @@ try {
     page.waitForRequest((r) =>
       /\/assets\/worker-[^/]+\.js$/.test(new URL(r.url()).pathname),
     ),
-    page
-      .locator("#round-file")
-      .setInputFiles({
-        name: "plan.json",
-        mimeType: "application/json",
-        buffer: Buffer.from(JSON.stringify(report)),
-      }),
+    page.locator("#round-file").setInputFiles({
+      name: "plan.json",
+      mimeType: "application/json",
+      buffer: Buffer.from(JSON.stringify(report)),
+    }),
   ]);
   await ready();
   assert.match(await page.locator("#result-title").innerText(), /^26/);
@@ -106,13 +104,29 @@ try {
       ),
       false,
     );
-    await page
-      .locator("#pickup-limits-bakery-f")
-      .screenshot({
-        path: resolve(output, `breadrelay-webkit-editor-${width}.png`),
-      });
+    await page.locator("#pickup-limits-bakery-f").screenshot({
+      path: resolve(output, `breadrelay-webkit-editor-${width}.png`),
+    });
+    await page.locator("#show-export").click();
+    const bandBox = await page.locator("#result-band").boundingBox(),
+      saveBox = await page.locator("#export-panel").boundingBox();
+    assert.ok(saveBox.y >= bandBox.y + bandBox.height);
+    assert.equal(
+      await page.evaluate(() =>
+        Boolean(
+          document
+            .querySelector("#result-band")
+            .compareDocumentPosition(document.querySelector("#copy-export")) &
+            Node.DOCUMENT_POSITION_FOLLOWING,
+        ),
+      ),
+      true,
+    );
+    await page.locator("#close-export").click();
   }
-  check("Open offer editor fits 390 and 320 px without page overflow");
+  check(
+    "Offer editor fits 390/320 px; save panel follows the result visually and in keyboard order",
+  );
   await page.emulateMedia({ media: "print" });
   assert.match(await page.locator("#print-context").innerText(), /synthetic/);
   assert.equal(await page.locator("#export-panel").isVisible(), false);

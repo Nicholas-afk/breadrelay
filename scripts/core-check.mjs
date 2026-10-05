@@ -267,9 +267,32 @@ try {
           .screenshot({ path: resolve(artifacts, editorCapture) });
         result.screenshots.push(editorCapture);
         await page.locator("#pickup-limits-bakery-f summary").click();
+        await page.locator("#show-export").click();
+        const bandBox = await page.locator("#result-band").boundingBox(),
+          saveBox = await page.locator("#export-panel").boundingBox();
+        assert.ok(
+          saveBox.y >= bandBox.y + bandBox.height,
+          "Mobile saving follows the result visually",
+        );
+        assert.equal(
+          await page.evaluate(() =>
+            Boolean(
+              document
+                .querySelector("#result-band")
+                .compareDocumentPosition(
+                  document.querySelector("#copy-export"),
+                ) & Node.DOCUMENT_POSITION_FOLLOWING,
+            ),
+          ),
+          true,
+        );
+        await page.locator("#close-export").click();
       }
       check(
         "Offer editing, matrix and exports fit 390 px and 320 px without page overflow",
+      );
+      check(
+        "Mobile save panel follows the result in visual and keyboard order",
       );
       await page.setViewportSize({ width: 1440, height: 1000 });
       await page.emulateMedia({ media: "print" });
@@ -347,13 +370,11 @@ try {
       );
       const malformed = { ...operator, pickups: Array(50000).fill({}) };
       let rejectedAt = Date.now();
-      await page
-        .locator("#round-file")
-        .setInputFiles({
-          name: "many.json",
-          mimeType: "application/json",
-          buffer: Buffer.from(JSON.stringify(malformed)),
-        });
+      await page.locator("#round-file").setInputFiles({
+        name: "many.json",
+        mimeType: "application/json",
+        buffer: Buffer.from(JSON.stringify(malformed)),
+      });
       await page.waitForFunction(() =>
         document
           .querySelector("#error-box")
@@ -362,13 +383,11 @@ try {
       assert.ok((await page.locator("#error-box li").count()) <= 12);
       result.overLimitFileRejectMs = Date.now() - rejectedAt;
       const manyErrors = { ...operator, pickups: Array(10).fill({}) };
-      await page
-        .locator("#round-file")
-        .setInputFiles({
-          name: "fields.json",
-          mimeType: "application/json",
-          buffer: Buffer.from(JSON.stringify(manyErrors)),
-        });
+      await page.locator("#round-file").setInputFiles({
+        name: "fields.json",
+        mimeType: "application/json",
+        buffer: Buffer.from(JSON.stringify(manyErrors)),
+      });
       await page.waitForFunction(() =>
         document.querySelector("#error-box")?.textContent.includes("Showing"),
       );

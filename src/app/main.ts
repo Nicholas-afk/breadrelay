@@ -519,10 +519,15 @@ $<HTMLInputElement>("round-file").onchange = async (e) => {
 const mobile = matchMedia("(max-width:700px)");
 function placeResult(): void {
   const band = $("result-band"),
+    panel = $("export-panel"),
     workspace = document.querySelector(".workspace")!;
-  if (mobile.matches)
+  if (mobile.matches) {
     workspace.insertBefore(band, document.querySelector(".route-section"));
-  else $("main").insertBefore(band, workspace);
+    workspace.insertBefore(panel, document.querySelector(".route-section"));
+  } else {
+    $("main").insertBefore(band, workspace);
+    $("main").insertBefore(panel, workspace);
+  }
 }
 mobile.addEventListener("change", placeResult);
 placeResult();

@@ -1,5 +1,7 @@
 # Verification of the core product
 
+The dated sections preserve earlier runs. The final core/evaluation snapshot below supersedes their counts and outstanding product work.
+
 Recorded 6 October 2026 at 01:41:49 HKT (5 October, 17:41:49 UTC). This is prototype evidence, not operator or delivered-food evidence.
 
 - Strict TypeScript and Vite production build: passed after review fixes and source formatting.
@@ -30,3 +32,18 @@ Current verification is15 native tests (including350 independent oracle cases),2
 The current result links directly to excluded-pickup explanations and defines the unchanged baseline. In100 seeded synthetic cancellation rounds, unchanged/defined greedy/exact totals are1,688/1,830/1,956 kg scheduled; exact improves over unchanged57 times and over greedy34 times, equalling the remainder. The mean modeled gains are2.68 kg and1.26 kg. All compared plans validate; the greedy shares the feasibility simulator, so the separate oracle supplies independent correctness evidence. Reproduce with `npm run evaluate`; the JSON includes every generated scenario, seed and comparator definitions. These are not field-effect or vendor-performance estimates.
 
 Internal agent review and a simulated first-use critique are not external human user feedback. Operator usefulness, exact travel assumptions, structural JSON setup and real phone/assistive use remain unvalidated. The public repo/Pages path returned404 during this evaluation. Release, required demo video and accurate submission remain separate unfinished work, with eligibility unresolved. The external project record contains the complete official-rubric assessment, ranked improvements and final artifact evidence.
+
+## Final verified core and critical evaluation — 6 October, 02:45 HKT
+
+- Native tests: **15/15 passed**, including **350 independent exhaustive-oracle comparisons** and hand-checked boundary, non-metric, retention and stable-ID fixtures.
+- Strict TypeScript checking and production build: passed.
+- Compiled Chrome154: **24 interface +21 core checks passed**. Playwright WebKit26.5: **10 additional checks passed**. No unexpected page errors or external runtime requests in these runs. Phone widths320/390, tablet768 and desktop1440 were exercised in Chrome; WebKit includes320/390 widths.
+- Latest Chrome cancellation click-to-ready: **77 ms**, including automation overhead. Rejection of the in-size50,000-record file: **23 ms**, also including automation overhead. These are measurements on this machine, not general user/device guarantees.
+- Thirty full calculations in the compiled worker at10 pickups /3 volunteers /3 stops: median**18.1 ms**, p95**30.7 ms**, maximum**40.5 ms**. Full calculation includes reference, baseline, recovery, all excluded alternatives and independent returned-plan validation.
+- One hundred seeded synthetic cancellation cases: unchanged/defined greedy/exact scheduled totals**1,688 /1,830 /1,956 kg**. Exact exceeds unchanged in57 cases and greedy in34; it equals the remainder. Mean modeled gains**2.68 /1.26 kg**. Full generator inputs, outputs and comparator definitions are retained externally in `EVALUATION_BASELINES.json`; reproduce with `npm run evaluate`.
+
+Final screenshot inspection found the open mobile save panel above the crew/result. A compiled-browser regression failed before correction. Moving the panel with the result in the responsive DOM and placing it after the result fixes both visual and keyboard order. Chrome and WebKit now verify that order at320/390 px. The result's direct unassigned-pickup link and baseline definition also improve the cancellation-to-explanation demonstration.
+
+Fresh review's two Important import issues are fixed: unsupported counts stop before record traversal; the visible error summary caps at12 corrections; canonical scenarios keep only validated fields, so extra input data cannot inflate a saved report beyond the reopen limit. Native regressions were observed failing before the fixes. Pending assignment rows show Checking/Not checked; old route details retain the inputs belonging to their checked result.
+
+Usefulness and visual polish have different evidence: this is a working bounded optimizer and complete local workflow, with an operational interface, but no genuine external operator feedback or observed delivered-food outcome. Routing and multi-stop food rescue already exist; the transparent forced-pickup trade-off is a plausible product differentiator, not a proven novel algorithm or vendor advantage. The synthetic comparison is not a representative field study. WebKit is a desktop engine, not physical iPhone/Safari or assistive-technology evidence. Structural setup still requires complete JSON and supplied travel minutes. Fresh offline reload and Firefox are unverified. Public deployment, actual-product video, eligibility resolution and submission remain unfinished. The durable project record contains the official-rubric assessment and ranked next work.
