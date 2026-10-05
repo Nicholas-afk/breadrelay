@@ -1,22 +1,23 @@
 {
-  "kind": "BreadRelay verified static release",
-  "sourceCommit": "410f0376c3dfe5a28849e61c843e0e34a44c5235",
-  "builtAt": "2026-10-05T19:12:38.612957+00:00",
+  "app": "BreadRelay",
+  "version": "0.1.1",
+  "sourceCommit": "763fdc563f3b2ad1f0c8fb495cf1696d697e2e6c",
   "assetsSha256": {
     ".nojekyll": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "assets/index-DPJnG4K1.js": "3fea46c89f11e93e645c2e4b900312f8d021b7cd4e4278f27396dd724f54d646",
+    "THIRD_PARTY_NOTICES.txt": "ee7d78456b8558b3b67391882a3a390ab512bf38a43367d89b4d9014c339c808",
     "assets/index-DSQn4G9_.css": "cbad719006855ea5ff1a1eebd527e8195a003d064f16daeb23dd74c836d61146",
+    "assets/index-DmJ1nOQB.js": "c8bbe14926268b06c693a8e1ed37aa9dbdede4e7ec3988b41ca399a8acd87806",
     "assets/worker-DYHBubya.js": "9a6ae5baa8a23b0fee6d9aa913f87b7fa0066522f061052faff55f4c72d84f78",
-    "index.html": "ee5c75c0b37216b1d5f1fd3ebc2c77b96b7ded34790bf30d1a4b340884447d88"
+    "index.html": "58941be0b6dbeb8f955afc797fd223aeeacaa01952dcb9f6c32ae11b79a2fe8c"
   },
-  "actualDeliveryVerified": false,
-  "localVerification": {
-    "nativeTestsPassed": 16,
+  "verificationBeforePublishing": {
+    "nativeTests": 16,
     "independentOracleComparisons": 350,
-    "chromeInterfaceChecks": 24,
-    "chromeCoreChecks": 21,
-    "chromeImprovementChecks": 7,
-    "webkitEngineChecks": 11
+    "localChromeAssertions": 52,
+    "desktopWebKitAssertions": 11
   },
-  "limits": "Synthetic demonstration; fixed entered travel; before departure; bounded10 pickups/3 volunteers/3 stops. No operator endorsement or field-outcome claim."
+  "dataBoundary": "Browser-only planning; fictional sample; scheduled quantity is not delivered food.",
+  "originalSourceLicense": "UNLICENSED",
+  "backendRequired": false,
+  "productionSecretsRequired": false
 }
