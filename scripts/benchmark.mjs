@@ -19,17 +19,15 @@ const scenario = {
     "All distinct locations 2 minutes apart; synthetic stress only.",
   hub: { id: "hub", label: "Hub" },
   maxStops: 3,
-  pickups: nodes
-    .slice(1)
-    .map((id, i) => ({
-      id,
-      label: id,
-      weightGrams: (i + 1) * 1000,
-      readyMinute: 0,
-      closeMinute: 1439,
-      serviceMinutes: 3,
-      hubDeadlineMinute: 1439,
-    })),
+  pickups: nodes.slice(1).map((id, i) => ({
+    id,
+    label: id,
+    weightGrams: (i + 1) * 1000,
+    readyMinute: 0,
+    closeMinute: 1439,
+    serviceMinutes: 3,
+    hubDeadlineMinute: 1439,
+  })),
   volunteers: Array.from({ length: 3 }, (_, i) => ({
     id: "volunteer-" + i,
     label: "Crew " + i,

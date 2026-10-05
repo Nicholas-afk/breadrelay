@@ -41,17 +41,15 @@ function scenario(directed = false): Scenario {
     hub: { id: "hub", label: "Hub" },
     maxStops: 3,
     travelMinutes,
-    pickups: nodes
-      .slice(1)
-      .map((id) => ({
-        id,
-        label: id,
-        weightGrams: (4 + Math.floor(random() * 12)) * 1000,
-        readyMinute: Math.floor(random() * 12),
-        closeMinute: 22 + Math.floor(random() * 28),
-        hubDeadlineMinute: 40 + Math.floor(random() * 28),
-        serviceMinutes: 3,
-      })),
+    pickups: nodes.slice(1).map((id) => ({
+      id,
+      label: id,
+      weightGrams: (4 + Math.floor(random() * 12)) * 1000,
+      readyMinute: Math.floor(random() * 12),
+      closeMinute: 22 + Math.floor(random() * 28),
+      hubDeadlineMinute: 40 + Math.floor(random() * 28),
+      serviceMinutes: 3,
+    })),
     volunteers: Array.from({ length: 2 }, (_, i) => ({
       id: "v-" + i,
       label: "Crew " + i,

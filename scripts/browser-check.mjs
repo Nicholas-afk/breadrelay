@@ -50,15 +50,13 @@ const screenshot = async (name, fullPage = true) => {
   results.screenshots.push(`breadrelay-${name}.png`);
 };
 const upload = async (value) =>
-  page
-    .locator("#round-file")
-    .setInputFiles({
-      name: "round.json",
-      mimeType: "application/json",
-      buffer: Buffer.from(
-        typeof value === "string" ? value : JSON.stringify(value),
-      ),
-    });
+  page.locator("#round-file").setInputFiles({
+    name: "round.json",
+    mimeType: "application/json",
+    buffer: Buffer.from(
+      typeof value === "string" ? value : JSON.stringify(value),
+    ),
+  });
 try {
   const context = await browser.newContext({
     viewport: { width: 1440, height: 1000 },
