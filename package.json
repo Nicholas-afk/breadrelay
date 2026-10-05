@@ -1,6 +1,6 @@
 {
   "name": "breadrelay",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "type": "module",
   "scripts": {
@@ -14,12 +14,14 @@
     "benchmark": "node scripts/benchmark.mjs",
     "evaluate": "node --experimental-strip-types scripts/evaluate-baselines.ts",
     "check:webkit": "node scripts/webkit-check.mjs",
-    "check:improvements": "node scripts/improvement-check.mjs"
+    "check:improvements": "node scripts/improvement-check.mjs",
+    "check:production": "node scripts/production-check.mjs"
   },
   "devDependencies": {
     "vite": "8.3.2",
     "typescript": "7.0.2",
     "@types/node": "22.18.0",
     "playwright": "1.62.1"
-  }
+  },
+  "license": "UNLICENSED"
 }

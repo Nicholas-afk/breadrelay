@@ -4,7 +4,7 @@ A small, local collection planner for an evening bakery-surplus crew. Mark a vol
 
 The bundled round is explicitly synthetic: 38 kg initially; cancelling Volunteer A leaves 18 kg on the unchanged route; replanning schedules 26 kg. These are scheduled quantities, not observed deliveries.
 
-[Try BreadRelay](https://nicholas-afk.github.io/breadrelay/) · [Source](https://github.com/Nicholas-afk/breadrelay)
+[Try BreadRelay](https://nicholas-afk.github.io/breadrelay/) · [Source](https://github.com/Nicholas-afk/breadrelay) · [Releases](https://github.com/Nicholas-afk/breadrelay/releases)
 
 ## Try the central workflow
 
@@ -16,7 +16,12 @@ This is a before-departure prototype for a small prepared collection round. It h
 
 ## Run
 
-Use Node 22.18.0 and npm.
+Use Node 22.18.0 and npm10.9.3. Clone the public source first:
+
+```sh
+git clone https://github.com/Nicholas-afk/breadrelay.git
+cd breadrelay
+```
 
 ```sh
 npm ci
@@ -45,7 +50,7 @@ Open a round JSON file (schema version 1) based on `src/fixtures/demo.json` to r
 
 ## Implementation
 
-Native HTML/CSS, TypeScript, Vite and a module worker. An exact bounded route enumeration and disjoint-subset dynamic program maximize grams, then retain earlier volunteer assignments, then minimize travel. A separate route validator recomputes timing and load. See `docs/algorithm.md`, `docs/evaluation.md` and `AI_DISCLOSURE.md`.
+Native HTML/CSS, TypeScript, Vite and a module worker. An exact bounded route enumeration and disjoint-subset dynamic program maximize grams, then retain earlier volunteer assignments, then minimize travel. A separate route validator recomputes timing and load. See [architecture and data boundaries](docs/architecture.md), [algorithm](docs/algorithm.md), [evaluation](docs/evaluation.md) and [AI disclosure](AI_DISCLOSURE.md).
 
 The relative asset build supports static project-subpath hosting. The source is on `main`; the compiled `gh-pages` branch is the publishing source. No server is needed. See `docs/hosting.md` for the verification and rollback procedure.
 
@@ -60,3 +65,11 @@ Only validated schema fields are kept when opening a round. Unspecified extra JS
 `npm run check:improvements` checks the actual add/drop breakdown against downloaded plans, all three sample alternatives, infeasible/empty handling, desktop/phone layout and refresh. Set `BREADRELAY_BASE_URL=https://nicholas-afk.github.io/breadrelay/` to run the same journey on the deployed HTTPS site.
 
 In the seeded 100-case comparison, total modeled scheduled weight is 1,688 kg unchanged, 1,830 kg with a defined greedy insertion planner and 1,956 kg with exact recovery. Exact improves over unchanged in 57 cases and over greedy in 34, matching the remainder. These are generated cases with shared feasibility simulation for greedy; independent correctness comes from the 350-case exhaustive oracle and separate returned-plan validator. They do not establish field benefit or superiority to an existing vendor.
+
+## Attribution and licensing
+
+Codex contributed substantially; the running app performs no AI inference. Research sources, synthetic-data provenance and tool attribution are in [docs/attribution.md](docs/attribution.md). Original project source currently has no open-source license grant (`UNLICENSED`); [LICENSE.md](LICENSE.md) records that status. [Locked dependency licenses](docs/dependency-licenses.md) and the published [Vite helper notice](public/THIRD_PARTY_NOTICES.txt) distinguish third-party terms.
+
+The public site needs no backend, production environment variables or API credentials. GitHub Pages serves its static files; the host handles ordinary access requests while round inputs are processed locally. Initial load needs connectivity. Release archives and manifests preserve source/build hashes and a restorable checkpoint.
+
+`npm run check:production` checks the actual public HTTPS site at1440/390/320 px, including report/download/reset/reopen, clipboard, malformed input, print, network loss, direct index/fragment links and reload. Set `BREADRELAY_BASE_URL` to another HTTPS deployment when verifying a release candidate; the downloaded report version must match this checkout. These are automated browser checks, not physical-device or human usability evidence.

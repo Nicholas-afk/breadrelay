@@ -7,7 +7,7 @@ export function createReport(
   return {
     kind: "breadrelay-report",
     version: 1,
-    appVersion: "0.1.0",
+    appVersion: "0.1.1",
     referenceScenario,
     currentScenario: scenario,
     referencePlan: calculation.referencePlan,
