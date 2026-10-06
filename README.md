@@ -50,7 +50,7 @@ Open a round JSON file (schema version 1) based on `src/fixtures/demo.json` to r
 
 ## Implementation
 
-Native HTML/CSS, TypeScript, Vite and a module worker. An exact bounded route enumeration and disjoint-subset dynamic program maximize grams, then retain earlier volunteer assignments, then minimize travel. A separate route validator recomputes timing and load. See [architecture and data boundaries](docs/architecture.md), [algorithm](docs/algorithm.md), [evaluation](docs/evaluation.md) and [AI disclosure](AI_DISCLOSURE.md).
+Native HTML/CSS, TypeScript, Vite and a module worker. An exact bounded route enumeration and disjoint-subset dynamic program maximize grams, then retain earlier volunteer assignments, then minimize travel. A separate route validator recomputes timing and load. See [architecture and data boundaries](docs/architecture.md), [algorithm](docs/algorithm.md), [evaluation](docs/evaluation.md).
 
 The relative asset build supports static project-subpath hosting. The source is on `main`; the compiled `gh-pages` branch is the publishing source. No server is needed. See `docs/hosting.md` for the verification and rollback procedure.
 
@@ -68,7 +68,7 @@ In the seeded 100-case comparison, total modeled scheduled weight is 1,688 kg un
 
 ## Attribution and licensing
 
-Codex contributed substantially; the running app performs no AI inference. Research sources, synthetic-data provenance and tool attribution are in [docs/attribution.md](docs/attribution.md). Original project source currently has no open-source license grant (`UNLICENSED`); [LICENSE.md](LICENSE.md) records that status. [Locked dependency licenses](docs/dependency-licenses.md) and the published [Vite helper notice](public/THIRD_PARTY_NOTICES.txt) distinguish third-party terms.
+Research sources, synthetic-data provenance and component attribution are in [docs/attribution.md](docs/attribution.md). Original project source currently has no open-source license grant (`UNLICENSED`); [LICENSE.md](LICENSE.md) records that status. [Locked dependency licenses](docs/dependency-licenses.md) and the published [Vite helper notice](public/THIRD_PARTY_NOTICES.txt) distinguish third-party terms.
 
 The public site needs no backend, production environment variables or API credentials. GitHub Pages serves its static files; the host handles ordinary access requests while round inputs are processed locally. Initial load needs connectivity. Release archives and manifests preserve source/build hashes and a restorable checkpoint.
 

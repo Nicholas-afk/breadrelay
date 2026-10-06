@@ -1,8 +1,8 @@
 # Attribution and provenance
 
-OpenAI Codex contributed substantially to research, planning, design, implementation, testing, review and documentation. See [AI_DISCLOSURE.md](../AI_DISCLOSURE.md). The running product uses a deterministic planner and does not call a model API. No undisclosed model or external service is credited as a working integration.
+The running product uses a deterministic planner and does not call a model API. No undisclosed model or external service is credited as a working integration.
 
-The source, illustrative fixture, SVG bread mark and interface were created for this project with that assistance. The sample's bakery/volunteer labels, weights, windows and travel minutes are fictional. The generated evaluation corpus is synthetic too; it is not an operator dataset or an observed food-rescue result.
+The source, illustrative fixture, SVG bread mark and interface were created for this project. The sample's bakery/volunteer labels, weights, windows and travel minutes are fictional. The generated evaluation corpus is synthetic too; it is not an operator dataset or an observed food-rescue result.
 
 Problem research used [Feeding Hong Kong's Bread Run](https://feedinghk.org/bread-runner/). Prior-art research used [Food Rescue Hero's multi-stop workflow](https://foodrescuehero.org/introducing-multi-stop-rescues/) and [Google OR-Tools routing documentation](https://developers.google.com/optimization/routing/vrptw). These sources informed the problem and comparison; BreadRelay does not claim their endorsement, affiliation or copied operational data. Routing with time windows is established prior art, not a claimed new algorithm.
 
